@@ -33,6 +33,9 @@ class MemoryGraph:
             self.config.graph_store.config.url,
             self.config.graph_store.config.username,
             self.config.graph_store.config.password,
+            self.config.graph_store.config.database,
+            refresh_schema=False,
+            driver_config={"notifications_min_severity":"OFF"},
         )
         self.embedding_model = EmbedderFactory.create(
             self.config.embedder.provider, self.config.embedder.config, self.config.vector_store.config
@@ -324,8 +327,8 @@ class MemoryGraph:
             relationship = item["relationship"]
 
             # types
-            source_type = entity_type_map.get(source, "unknown")
-            destination_type = entity_type_map.get(destination, "unknown")
+            source_type = entity_type_map.get(source, "__User__")
+            destination_type = entity_type_map.get(destination, "__User__")
 
             # embeddings
             source_embedding = self.embedding_model.embed(source)
